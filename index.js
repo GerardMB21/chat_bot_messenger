@@ -1,11 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const request = require('request');
 
 const app = express();
 
 const VERIFY_TOKEN = process.env.TOKEN;
 const host = process.env.HOST;
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
 
 app.use(bodyParser.json());
 
@@ -18,6 +20,15 @@ app.post('/webhook',(req,res)=>{
     body.entry.forEach(entry => {
       const webhookEvent = entry.messaging[0];
       console.log(webhookEvent);
+
+      const sender_psid = webhookEvent.sender.id;
+      console.log(`Sender PSID: ${sender_psid}`);
+
+      if (webhookEvent.message) {
+        handleMessage(sender_psid,webhookEvent.message);
+      } else if (webhookEvent.postback) {
+        handlePostback(sender_psid,webhookEvent.postback);
+      };
     });
 
     res.status(200).send('EVENT RECIBID')
@@ -44,6 +55,94 @@ app.get('/webhook',(req,res)=>{
     res.sendStatus(404);
   };
 });
+
+function handleMessage(sender_psid,recevied_message) {
+  let response;
+
+  if (recevied_message.text) {
+    response = {
+      'text': `Tu mensaje fue: ${recevied_message.text}`
+    };
+  } else if (recevied_message.attachments) {
+    const url = recevied_message.attachments[0].payload.url;
+    response = {
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"generic",
+          "elements":[
+             {
+              "title":"Confirm image",
+              "image_url":url,
+              "subtitle":"Example proob",
+              // REDIRECT WEB
+              // "default_action": {
+              //   "type": "web_url",
+              //   "url": "https://petersfancybrownhats.com/view?item=103",
+              //   "messenger_extensions": false,
+              //   "webview_height_ratio": "tall",
+              //   "fallback_url": "https://petersfancybrownhats.com/"
+              // },
+              "buttons":[
+                {
+                  // REDIRECT WEB
+                  // "type":"web_url",
+                  "type":"postback",
+                  // "url":"https://petersfancybrownhats.com",
+                  "title":"Yes",
+                  "payload":true
+                },
+                {
+                  "type":"postback",
+                  "title":"NO",
+                  "payload":false
+                }              
+              ]      
+            }
+          ]
+        }
+      }
+    };
+  }
+
+  callSendAPI(sender_psid,response)
+}
+
+function handlePostback(sender_psid,recevied_postback) {
+  let response = '';
+
+  const payload = recevied_postback.payload;
+
+  if (payload) {
+    response = {'text':'Thanks for the picture'};
+  } else {
+    response = {'text':'Try other image'};
+  };
+
+  callSendAPI(sender_psid,response);
+}
+
+function callSendAPI(sender_psid,response) {
+  const requestBody = {
+    'recipient': {
+      'id': sender_psid
+    },
+    'message': response
+  };
+
+  request({
+    'uri': 'link de la app',
+    'qs': { 'access_token': PAGE_ACCESS_TOKEN },
+    'method': 'POST',
+    'json': requestBody
+  },(err,res,body)=>{
+    if (!err) {
+      console.log('Send Message return');
+    } else {
+      console.error('Message not send');
+    };
+  });
+}
 
 app.listen(host, ()=>{
   console.log(`http://localhost:${host}`);
