@@ -140,7 +140,7 @@ function callSendAPI(sender_psid,response) {
     if (!err) {
       console.log('Send Message return');
     } else {
-      console.log(err)
+      // console.log(err)
       console.error('Message not send');
     };
   });
