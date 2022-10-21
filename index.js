@@ -6,7 +6,7 @@ const request = require('request');
 const app = express();
 
 const VERIFY_TOKEN = process.env.TOKEN;
-const host = process.env.HOST;
+const PORT = process.env.PORT || 4001;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
 
 app.use(bodyParser.json());
@@ -144,6 +144,6 @@ function callSendAPI(sender_psid,response) {
   });
 }
 
-app.listen(host, ()=>{
+app.listen(PORT, ()=>{
   console.log(`http://localhost:${host}`);
 });
