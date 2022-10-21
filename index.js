@@ -66,6 +66,44 @@ function handleMessage(sender_psid,recevied_message) {
     };
   } else if (recevied_message.attachments) {
     const url = recevied_message.attachments[0].payload.url;
+    // response = {
+    //   "attachment":{
+    //     "type":"template",
+    //     "payload":{
+    //       "template_type":"generic",
+    //       "elements":[
+    //          {
+    //           "title":"Confirm image",
+    //           "image_url":url,
+    //           "subtitle":"Example proob",
+    //           // REDIRECT WEB
+    //           // "default_action": {
+    //           //   "type": "web_url",
+    //           //   "url": "https://petersfancybrownhats.com/view?item=103",
+    //           //   "messenger_extensions": false,
+    //           //   "webview_height_ratio": "tall",
+    //           //   "fallback_url": "https://petersfancybrownhats.com/"
+    //           // },
+    //           "buttons":[
+    //             {
+    //               // REDIRECT WEB
+    //               // "type":"web_url",
+    //               "type":"postback",
+    //               // "url":"https://petersfancybrownhats.com",
+    //               "title":"Yes",
+    //               "payload":true
+    //             },
+    //             {
+    //               "type":"postback",
+    //               "title":"NO",
+    //               "payload":false
+    //             }              
+    //           ]      
+    //         }
+    //       ]
+    //     }
+    //   }
+    // };
     response = {
       "attachment":{
         "type":"template",
@@ -76,20 +114,9 @@ function handleMessage(sender_psid,recevied_message) {
               "title":"Confirm image",
               "image_url":url,
               "subtitle":"Example proob",
-              // REDIRECT WEB
-              // "default_action": {
-              //   "type": "web_url",
-              //   "url": "https://petersfancybrownhats.com/view?item=103",
-              //   "messenger_extensions": false,
-              //   "webview_height_ratio": "tall",
-              //   "fallback_url": "https://petersfancybrownhats.com/"
-              // },
               "buttons":[
                 {
-                  // REDIRECT WEB
-                  // "type":"web_url",
                   "type":"postback",
-                  // "url":"https://petersfancybrownhats.com",
                   "title":"Yes",
                   "payload":true
                 },
