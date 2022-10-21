@@ -145,5 +145,5 @@ function callSendAPI(sender_psid,response) {
 }
 
 app.listen(PORT, ()=>{
-  console.log(`http://localhost:${host}`);
+  console.log(`http://localhost:${PORT}`);
 });
