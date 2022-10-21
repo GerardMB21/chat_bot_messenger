@@ -49,9 +49,15 @@ app.get('/webhook',(req,res)=>{
       console.log('WEBHOOK VERIFY');
       res.status(200).send(challenge);
     } else {
+      console.log('inside: '+mode);
+      console.log('inside: '+verify);
+      console.log('inside: '+VERIFY_TOKEN);
       res.sendStatus(404);
     };
   } else {
+    console.log('outside: '+mode);
+    console.log('outside: '+verify);
+    console.log('outside: '+VERIFY_TOKEN);
     res.sendStatus(404);
   };
 });
