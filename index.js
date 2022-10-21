@@ -8,6 +8,7 @@ const app = express();
 const VERIFY_TOKEN = process.env.TOKEN;
 const PORT = process.env.PORT || 4001;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
+const LINK_FB = process.env.LINK_FB
 
 app.use(bodyParser.json());
 
@@ -131,7 +132,7 @@ function callSendAPI(sender_psid,response) {
   };
 
   request({
-    'uri': 'link de la app',
+    'uri': LINK_FB,
     'qs': { 'access_token': PAGE_ACCESS_TOKEN },
     'method': 'POST',
     'json': requestBody
@@ -139,6 +140,7 @@ function callSendAPI(sender_psid,response) {
     if (!err) {
       console.log('Send Message return');
     } else {
+      console.log(err)
       console.error('Message not send');
     };
   });
