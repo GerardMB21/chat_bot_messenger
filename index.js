@@ -72,7 +72,7 @@ function handleMessage(sender_psid,recevied_message) {
         "payload":{
           "template_type":"generic",
           "elements":[
-             {
+            {
               "title":"Confirm image",
               "image_url":url,
               "subtitle":"Example proob",
